@@ -1,0 +1,3 @@
+[build]
+  command = "python scraper.py"
+  publish = "."

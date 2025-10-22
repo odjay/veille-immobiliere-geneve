@@ -1,0 +1,57 @@
+[
+  {
+    "Portail": "ImmoScout24",
+    "Adresse": "13 av. du Plateau, Petit-Lancy",
+    "Pièces": "3",
+    "Surface": "48",
+    "Loyer": "1100",
+    "Meublé": "Non",
+    "Balcon/Terrasse": "Balcon commun",
+    "Description courte": "Villa calme",
+    "URL annonce": "https://www.immoscout24.ch/louer/4002479459"
+  },
+  {
+    "Portail": "Properstar",
+    "Adresse": "Rue des Glacis-de-Rive, Genève",
+    "Pièces": "2",
+    "Surface": "32",
+    "Loyer": "1116",
+    "Meublé": "Oui",
+    "Balcon/Terrasse": "Non",
+    "Description courte": "Studio centre",
+    "URL annonce": "https://www.properstar.ch/suisse/geneve/louer/appartement"
+  },
+  {
+    "Portail": "ImmoScout24",
+    "Adresse": "1207 Genève Eaux-Vives",
+    "Pièces": "2",
+    "Surface": "45",
+    "Loyer": "1170",
+    "Meublé": "Oui",
+    "Balcon/Terrasse": "Non",
+    "Description courte": "Central",
+    "URL annonce": "https://www.immoscout24.ch/louer/4002621890"
+  },
+  {
+    "Portail": "Comparis",
+    "Adresse": "Rue Hugo-De-Senger, Genève",
+    "Pièces": "1.5",
+    "Surface": "25",
+    "Loyer": "1200",
+    "Meublé": "Non",
+    "Balcon/Terrasse": "Non",
+    "Description courte": "Plainpalais",
+    "URL annonce": "https://fr.comparis.ch/immobilien/marktplatz/geneve"
+  },
+  {
+    "Portail": "Moser Vernet",
+    "Adresse": "Route de Florissant, Genève",
+    "Pièces": "1.5",
+    "Surface": "29",
+    "Loyer": "1200",
+    "Meublé": "Non",
+    "Balcon/Terrasse": "Non",
+    "Description courte": "Florissant",
+    "URL annonce": "https://www.moservernet.ch/louer/appartements-geneve/"
+  }
+]

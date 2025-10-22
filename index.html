@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏠 Veille Immobilière Genève</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🏠 Veille Immobilière Genève</h1>
+            <p>Mise à jour automatique quotidienne • 1.5–3 pièces • 1100–1700 CHF/mois</p>
+            <p class="updated-at">Dernière mise à jour: <span id="last-update">--:-- --</span></p>
+        </header>
+        <section class="filters">
+            <h2>🔍 Filtrer</h2>
+            <div class="filter-group">
+                <label for="filter-loyer">💰 Loyer (CHF):</label>
+                <select id="filter-loyer">
+                    <option value="">Tous</option>
+                    <option value="1100-1299">1100–1299 CHF</option>
+                    <option value="1300-1499">1300–1499 CHF</option>
+                    <option value="1500-1700">1500–1700 CHF</option>
+                </select>
+                <label for="filter-pieces">🏠 Pièces:</label>
+                <select id="filter-pieces">
+                    <option value="">Tous</option>
+                    <option value="1.5">1.5 pièces</option>
+                    <option value="2">2 pièces</option>
+                    <option value="2.5">2.5 pièces</option>
+                    <option value="3">3 pièces</option>
+                </select>
+                <label for="filter-meuble">🛋️ Meublé:</label>
+                <select id="filter-meuble">
+                    <option value="">Tous</option>
+                    <option value="Non">Non meublé</option>
+                    <option value="Oui">Meublé</option>
+                </select>
+                <label for="search">🔎 Recherche:</label>
+                <input type="text" id="search" placeholder="Plainpalais, Eaux-Vives...">
+                <button id="reset-filters" class="btn-reset">🔄 Réinitialiser</button>
+            </div>
+        </section>
+        <section class="results">
+            <h2>📊 Résultats (<span id="count">0</span> annonces)</h2>
+            <div class="table-wrapper">
+                <table id="annonces-table">
+                    <thead>
+                        <tr>
+                            <th>💰 Loyer</th>
+                            <th>🏠 Pièces</th>
+                            <th>📐 Surface</th>
+                            <th>📍 Adresse</th>
+                            <th>📝 Description</th>
+                            <th>🔗 Lien</th>
+                            <th>📌 Portail</th>
+                        </tr>
+                    </thead>
+                    <tbody id="annonces-tbody"></tbody>
+                </table>
+            </div>
+            <div class="export-buttons">
+                <button id="export-csv" class="btn-export">📥 Exporter CSV</button>
+                <button id="export-json" class="btn-export">📥 Exporter JSON</button>
+            </div>
+        </section>
+        <section class="stats">
+            <h2>📈 Statistiques</h2>
+            <div class="stats-grid">
+                <div class="stat-card"><h3>💰 Loyer moyen</h3><p id="stat-avg-loyer">--</p></div>
+                <div class="stat-card"><h3>📐 Surface moyenne</h3><p id="stat-avg-surface">--</p></div>
+                <div class="stat-card"><h3>⭐ Meilleur prix/m²</h3><p id="stat-best-deal">--</p></div>
+                <div class="stat-card"><h3>🏢 Portails couverts</h3><p id="stat-portals">--</p></div>
+            </div>
+        </section>
+        <footer class="footer">
+            <p>🤖 Veille automatique quotidienne • <a href="https://github.com" target="_blank">GitHub</a></p>
+            <p>Données provenant de portails publics. À titre informatif.</p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
