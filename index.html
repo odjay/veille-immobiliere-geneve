@@ -3,82 +3,539 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🏠 Veille Immobilière Genève</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Veille Immobilière Genève 🏠</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 20px;
+            padding: 30px;
+        }
+
+        .filters {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .filters h3 {
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 1.1em;
+        }
+
+        .filter-group {
+            margin-bottom: 20px;
+        }
+
+        .filter-group label {
+            display: block;
+            margin: 8px 0;
+            cursor: pointer;
+            color: #555;
+        }
+
+        .filter-group input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+
+        .reset-btn, .export-btn {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .reset-btn {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .reset-btn:hover {
+            background: #c0392b;
+        }
+
+        .export-btn {
+            background: #27ae60;
+            color: white;
+            margin: 5px 0;
+        }
+
+        .export-btn:hover {
+            background: #229954;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .results-header h2 {
+            color: #333;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-card .label {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .stat-card .value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        thead {
+            background: #667eea;
+            color: white;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tbody tr:hover {
+            background: #f8f9fa;
+            transition: 0.2s;
+        }
+
+        .price {
+            font-weight: bold;
+            color: #27ae60;
+            font-size: 1.1em;
+        }
+
+        .link-btn {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: 0.3s;
+        }
+
+        .link-btn:hover {
+            background: #2980b9;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .empty-state p {
+            font-size: 1.2em;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+            
+            .filters {
+                position: static;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            table {
+                font-size: 0.9em;
+            }
+            
+            th, td {
+                padding: 8px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <header class="header">
+        <header>
             <h1>🏠 Veille Immobilière Genève</h1>
-            <p>Mise à jour automatique quotidienne • 1.5–3 pièces • 1100–1700 CHF/mois</p>
-            <p class="updated-at">Dernière mise à jour: <span id="last-update">--:-- --</span></p>
+            <p>Appartements à louer | 1.5 à 3 pièces | 1100–1700 CHF</p>
         </header>
-        <section class="filters">
-            <h2>🔍 Filtrer</h2>
-            <div class="filter-group">
-                <label for="filter-loyer">💰 Loyer (CHF):</label>
-                <select id="filter-loyer">
-                    <option value="">Tous</option>
-                    <option value="1100-1299">1100–1299 CHF</option>
-                    <option value="1300-1499">1300–1499 CHF</option>
-                    <option value="1500-1700">1500–1700 CHF</option>
-                </select>
-                <label for="filter-pieces">🏠 Pièces:</label>
-                <select id="filter-pieces">
-                    <option value="">Tous</option>
-                    <option value="1.5">1.5 pièces</option>
-                    <option value="2">2 pièces</option>
-                    <option value="2.5">2.5 pièces</option>
-                    <option value="3">3 pièces</option>
-                </select>
-                <label for="filter-meuble">🛋️ Meublé:</label>
-                <select id="filter-meuble">
-                    <option value="">Tous</option>
-                    <option value="Non">Non meublé</option>
-                    <option value="Oui">Meublé</option>
-                </select>
-                <label for="search">🔎 Recherche:</label>
-                <input type="text" id="search" placeholder="Plainpalais, Eaux-Vives...">
-                <button id="reset-filters" class="btn-reset">🔄 Réinitialiser</button>
+
+        <div class="content">
+            <!-- Filtres -->
+            <div class="filters">
+                <h3>🔍 Filtrer</h3>
+                
+                <div class="filter-group">
+                    <h4>💰 Loyer (CHF):</h4>
+                    <label><input type="radio" name="priceFilter" value="all" checked> Tous</label>
+                    <label><input type="radio" name="priceFilter" value="1100-1299"> 1100–1299 CHF</label>
+                    <label><input type="radio" name="priceFilter" value="1300-1499"> 1300–1499 CHF</label>
+                    <label><input type="radio" name="priceFilter" value="1500-1700"> 1500–1700 CHF</label>
+                </div>
+
+                <div class="filter-group">
+                    <h4>🏠 Pièces:</h4>
+                    <label><input type="checkbox" class="roomFilter" value="all"> Tous</label>
+                    <label><input type="checkbox" class="roomFilter" value="1"> 1 pièce</label>
+                    <label><input type="checkbox" class="roomFilter" value="1.5"> 1.5 pièces</label>
+                    <label><input type="checkbox" class="roomFilter" value="2"> 2 pièces</label>
+                    <label><input type="checkbox" class="roomFilter" value="2.5"> 2.5 pièces</label>
+                    <label><input type="checkbox" class="roomFilter" value="3"> 3 pièces</label>
+                </div>
+
+                <div class="filter-group">
+                    <h4>🛋️ Meublé:</h4>
+                    <label><input type="radio" name="furnishedFilter" value="all" checked> Tous</label>
+                    <label><input type="radio" name="furnishedFilter" value="Non"> Non meublé</label>
+                    <label><input type="radio" name="furnishedFilter" value="Oui"> Meublé</label>
+                </div>
+
+                <div class="filter-group">
+                    <h4>🔎 Recherche:</h4>
+                    <input type="text" id="searchInput" placeholder="Adresse, quartier...">
+                </div>
+
+                <button class="reset-btn" onclick="resetFilters()">🔄 Réinitialiser</button>
+                <button class="export-btn" onclick="exportToCSV()">📥 Exporter CSV</button>
+                <button class="export-btn" onclick="exportToJSON()">📥 Exporter JSON</button>
             </div>
-        </section>
-        <section class="results">
-            <h2>📊 Résultats (<span id="count">0</span> annonces)</h2>
-            <div class="table-wrapper">
-                <table id="annonces-table">
-                    <thead>
-                        <tr>
-                            <th>💰 Loyer</th>
-                            <th>🏠 Pièces</th>
-                            <th>📐 Surface</th>
-                            <th>📍 Adresse</th>
-                            <th>📝 Description</th>
-                            <th>🔗 Lien</th>
-                            <th>📌 Portail</th>
-                        </tr>
-                    </thead>
-                    <tbody id="annonces-tbody"></tbody>
-                </table>
+
+            <!-- Contenu principal -->
+            <div class="main-content">
+                <div class="results-header">
+                    <h2>📊 Résultats (<span id="resultCount">0</span> annonces)</h2>
+                </div>
+
+                <!-- Statistiques -->
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="label">💰 Loyer moyen</div>
+                        <div class="value" id="avgPrice">--</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="label">📐 Surface moyenne</div>
+                        <div class="value" id="avgSurface">--</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="label">⭐ Meilleur prix/m²</div>
+                        <div class="value" id="bestRatio">--</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="label">🏢 Portails couverts</div>
+                        <div class="value" id="portalCount">--</div>
+                    </div>
+                </div>
+
+                <!-- Tableau -->
+                <div style="overflow-x: auto;">
+                    <table id="resultsTable">
+                        <thead>
+                            <tr>
+                                <th>💰 Loyer</th>
+                                <th>🏠 Pièces</th>
+                                <th>📐 Surface</th>
+                                <th>📍 Adresse</th>
+                                <th>📝 Description</th>
+                                <th>🔗 Lien</th>
+                                <th>📌 Portail</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                        </tbody>
+                    </table>
+                    <div id="emptyState" class="empty-state" style="display:none;">
+                        <p>Aucun résultat ne correspond à vos critères.</p>
+                    </div>
+                </div>
             </div>
-            <div class="export-buttons">
-                <button id="export-csv" class="btn-export">📥 Exporter CSV</button>
-                <button id="export-json" class="btn-export">📥 Exporter JSON</button>
-            </div>
-        </section>
-        <section class="stats">
-            <h2>📈 Statistiques</h2>
-            <div class="stats-grid">
-                <div class="stat-card"><h3>💰 Loyer moyen</h3><p id="stat-avg-loyer">--</p></div>
-                <div class="stat-card"><h3>📐 Surface moyenne</h3><p id="stat-avg-surface">--</p></div>
-                <div class="stat-card"><h3>⭐ Meilleur prix/m²</h3><p id="stat-best-deal">--</p></div>
-                <div class="stat-card"><h3>🏢 Portails couverts</h3><p id="stat-portals">--</p></div>
-            </div>
-        </section>
-        <footer class="footer">
-            <p>🤖 Veille automatique quotidienne • <a href="https://github.com" target="_blank">GitHub</a></p>
-            <p>Données provenant de portails publics. À titre informatif.</p>
-        </footer>
+        </div>
     </div>
-    <script src="script.js"></script>
+
+    <script>
+        let allData = [];
+
+        // Charger les données depuis data.json
+        async function loadData() {
+            try {
+                const response = await fetch('data.json');
+                allData = await response.json();
+                console.log('Données chargées:', allData.length, 'annonces');
+                displayResults(allData);
+                updateStats(allData);
+            } catch (error) {
+                console.error('Erreur chargement data.json:', error);
+                document.getElementById('emptyState').style.display = 'block';
+            }
+        }
+
+        // Afficher les résultats dans le tableau
+        function displayResults(data) {
+            const tableBody = document.getElementById('tableBody');
+            const resultCount = document.getElementById('resultCount');
+            
+            tableBody.innerHTML = '';
+            
+            if (data.length === 0) {
+                document.getElementById('emptyState').style.display = 'block';
+                resultCount.textContent = '0';
+                return;
+            }
+            
+            document.getElementById('emptyState').style.display = 'none';
+            resultCount.textContent = data.length;
+
+            data.forEach(item => {
+                const surface = item['Surface m²'] === 'N/A' ? '?' : item['Surface m²'];
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="price">${item['Loyer CHF']} CHF</td>
+                    <td>${item['Pièces']}p</td>
+                    <td>${surface}m²</td>
+                    <td>${item['Adresse']}</td>
+                    <td>${item['Description courte']}</td>
+                    <td><a href="${item['URL']}" target="_blank" class="link-btn">Voir 🔗</a></td>
+                    <td>${item['Portail']}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Mettre à jour les statistiques
+        function updateStats(data) {
+            if (data.length === 0) {
+                document.getElementById('avgPrice').textContent = '--';
+                document.getElementById('avgSurface').textContent = '--';
+                document.getElementById('bestRatio').textContent = '--';
+                document.getElementById('portalCount').textContent = '--';
+                return;
+            }
+
+            // Loyer moyen
+            const avgPrice = Math.round(data.reduce((sum, item) => sum + parseInt(item['Loyer CHF']), 0) / data.length);
+            document.getElementById('avgPrice').textContent = avgPrice + ' CHF';
+
+            // Surface moyenne
+            const surfaceData = data.filter(item => item['Surface m²'] !== 'N/A').map(item => parseInt(item['Surface m²']));
+            const avgSurface = surfaceData.length > 0 ? Math.round(surfaceData.reduce((a, b) => a + b) / surfaceData.length) : 0;
+            document.getElementById('avgSurface').textContent = avgSurface + ' m²';
+
+            // Meilleur prix/m²
+            let bestRatio = Infinity;
+            data.forEach(item => {
+                if (item['Surface m²'] !== 'N/A') {
+                    const ratio = parseInt(item['Loyer CHF']) / parseInt(item['Surface m²']);
+                    if (ratio < bestRatio) bestRatio = ratio;
+                }
+            });
+            document.getElementById('bestRatio').textContent = bestRatio !== Infinity ? bestRatio.toFixed(2) + ' CHF/m²' : '--';
+
+            // Portails couverts
+            const portals = new Set(data.map(item => item['Portail']));
+            document.getElementById('portalCount').textContent = portals.size;
+        }
+
+        // Filtrer les données
+        function applyFilters() {
+            const priceFilter = document.querySelector('input[name="priceFilter"]:checked').value;
+            const furnishedFilter = document.querySelector('input[name="furnishedFilter"]:checked').value;
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const selectedRooms = Array.from(document.querySelectorAll('.roomFilter:checked')).map(el => el.value);
+
+            let filtered = allData.filter(item => {
+                const price = parseInt(item['Loyer CHF']);
+                
+                // Filtre prix
+                if (priceFilter !== 'all') {
+                    const [min, max] = priceFilter.split('-').map(Number);
+                    if (price < min || price > max) return false;
+                }
+
+                // Filtre meublé
+                if (furnishedFilter !== 'all' && item['Meublé'] !== furnishedFilter) return false;
+
+                // Filtre pièces
+                if (selectedRooms.length > 0 && !selectedRooms.includes(item['Pièces'])) return false;
+
+                // Filtre recherche
+                if (searchTerm && !item['Adresse'].toLowerCase().includes(searchTerm)) return false;
+
+                return true;
+            });
+
+            displayResults(filtered);
+            updateStats(filtered);
+        }
+
+        // Réinitialiser filtres
+        function resetFilters() {
+            document.querySelectorAll('input[name="priceFilter"]')[0].checked = true;
+            document.querySelectorAll('input[name="furnishedFilter"]')[0].checked = true;
+            document.getElementById('searchInput').value = '';
+            document.querySelectorAll('.roomFilter').forEach(el => el.checked = false);
+            displayResults(allData);
+            updateStats(allData);
+        }
+
+        // Exporter en CSV
+        function exportToCSV() {
+            const displayed = Array.from(document.querySelectorAll('#tableBody tr')).length;
+            if (displayed === 0) {
+                alert('Aucune donnée à exporter.');
+                return;
+            }
+
+            const headers = ['Loyer CHF', 'Pièces', 'Surface m²', 'Adresse', 'Description', 'URL', 'Portail'];
+            let csv = headers.join(',') + '\n';
+
+            document.querySelectorAll('#tableBody tr').forEach(row => {
+                const cells = row.querySelectorAll('td');
+                const rowData = [
+                    cells[0].textContent.trim(),
+                    cells[1].textContent.trim(),
+                    cells[2].textContent.trim(),
+                    cells[3].textContent.trim(),
+                    cells[4].textContent.trim(),
+                    cells[5].querySelector('a').href,
+                    cells[6].textContent.trim()
+                ];
+                csv += rowData.map(cell => `"${cell}"`).join(',') + '\n';
+            });
+
+            downloadFile(csv, 'veille-immobiliere.csv', 'text/csv');
+        }
+
+        // Exporter en JSON
+        function exportToJSON() {
+            const displayed = Array.from(document.querySelectorAll('#tableBody tr')).length;
+            if (displayed === 0) {
+                alert('Aucune donnée à exporter.');
+                return;
+            }
+
+            const data = Array.from(document.querySelectorAll('#tableBody tr')).map(row => {
+                const cells = row.querySelectorAll('td');
+                return {
+                    'Loyer CHF': cells[0].textContent.trim(),
+                    'Pièces': cells[1].textContent.trim(),
+                    'Surface m²': cells[2].textContent.trim(),
+                    'Adresse': cells[3].textContent.trim(),
+                    'Description': cells[4].textContent.trim(),
+                    'URL': cells[5].querySelector('a').href,
+                    'Portail': cells[6].textContent.trim()
+                };
+            });
+
+            downloadFile(JSON.stringify(data, null, 2), 'veille-immobiliere.json', 'application/json');
+        }
+
+        // Télécharger un fichier
+        function downloadFile(content, filename, type) {
+            const blob = new Blob([content], { type });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        }
+
+        // Ajouter les event listeners
+        document.querySelectorAll('input[name="priceFilter"]').forEach(el => el.addEventListener('change', applyFilters));
+        document.querySelectorAll('input[name="furnishedFilter"]').forEach(el => el.addEventListener('change', applyFilters));
+        document.querySelectorAll('.roomFilter').forEach(el => el.addEventListener('change', applyFilters));
+        document.getElementById('searchInput').addEventListener('keyup', applyFilters);
+
+        // Charger les données au démarrage
+        loadData();
+    </script>
 </body>
 </html>
